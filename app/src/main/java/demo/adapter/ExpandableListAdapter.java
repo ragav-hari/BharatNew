@@ -10,8 +10,13 @@ import android.widget.TextView;
 
 import com.example.ragavendran.bharatnew.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.zip.Inflater;
+
+import demo.pojo.Brand;
 
 /**
  * Created by ragavendran on 26-06-2015.
@@ -21,10 +26,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private HashMap<String, ArrayList<Brand>> _listDataChild;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, ArrayList<Brand>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -45,7 +50,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final ArrayList<Brand> childArray = (ArrayList) getChild(groupPosition, childPosition);
+        String brandname = "";
+
+
+        TextView txtListChild = (TextView) convertView
+                .findViewById(R.id.lblListItem);
+        for(int i = 0 ; i < childArray.size() ; i++)
+        {
+            brandname = childArray.get(i).getBrand_name();
+        }
+        txtListChild.setText(brandname);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -53,10 +68,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
             convertView = infalInflater.inflate(R.layout.list_item, null);
         }
 
-        TextView txtListChild = (TextView) convertView
+     /*   TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.lblListItem);
 
-        txtListChild.setText(childText);
+        txtListChild.setText(childText); */
         return convertView;
     }
 
